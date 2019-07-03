@@ -42,8 +42,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Dashboard() {
-
+    //from store
     const [allChats] = React.useContext(CTX);
+    const rooms = Object.keys(allChats);
+    //local
+    const [activeRoom, changeActiveRoom]=React.useState(rooms[0]);
+
     const classes = useStyles();
     const [textValue, changeTextValue] = React.useState('');
 
@@ -54,14 +58,14 @@ export default function Dashboard() {
                     Live chat app
                 </Typography>
                 <Typography component="h5">
-                    Room placeholder
+                    {activeRoom}
                 </Typography>
                 <div className={classes.flex}>
                     <div className={classes.roomsWindow}>
                         <List>
                             {
-                                ['room'].map(rooms => (
-                                    <ListItem key={rooms} button>
+                               rooms.map(rooms => (
+                                    <ListItem onClick={e => changeActiveRoom(e.target.innerText)} key={rooms} button>
                                         <ListItemText primary={rooms} />
                                     </ListItem>
                                 ))
@@ -71,10 +75,10 @@ export default function Dashboard() {
 
                     <div className={classes.chatWindow}>
                             {
-                                [{from: 'user', msg: 'hello'}].map((chat, i) => (
+                                allChats[activeRoom].map((chat, i) => (
                                    <div className={classes.flex} key={i}>
                                        <Chip label={chat.from} className={classes.chip} />
-                                       <Typography>
+                                       <Typography variant='body1' gutterBottom>
                                            {chat.msg}
                                        </Typography>
                                    </div>
