@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard() {
     //from store
-    const [allChats] = React.useContext(CTX);
+    const {allChats, sendChatAction} = React.useContext(CTX);
     const rooms = Object.keys(allChats);
     //local
     const [activeRoom, changeActiveRoom]=React.useState(rooms[0]);
@@ -93,8 +93,16 @@ export default function Dashboard() {
                         value={textValue}
                         onChange={e => changeTextValue(e.target.value)}
                     />
-                    <Button variant="contained" color="primary" className={classes.button}>
-                        SEND
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={() => {
+                            sendChatAction(textValue);
+                            changeTextValue('')
+                        }}
+                    >
+                        Send
                     </Button>
 
                 </div>
